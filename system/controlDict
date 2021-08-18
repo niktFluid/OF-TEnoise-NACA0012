@@ -1,0 +1,116 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+libs ("libWENOEXT.so");
+
+application     rhoPimpleFoam;
+
+startFrom       latestTime;
+
+startTime       0.0;
+
+stopAt          endTime;
+
+endTime		600.0;
+
+deltaT          2.0e-3;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.5e-1;
+
+purgeWrite      2000;
+
+writeFormat     ascii;
+
+writePrecision  9;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+    #includeFunc probes
+
+    fieldAverage
+    {
+        type fieldAverage;
+        libs ("libfieldFunctionObjects.so");
+        fields
+        (
+	  rho
+	  {
+	      mean on;
+	      prime2Mean on;
+	      base time;
+	  }
+	    
+            U
+            {
+                mean on;
+                prime2Mean on;
+                base time;
+            }
+
+            p
+            {
+                mean on;
+                prime2Mean on;
+                base time;
+            }
+        );
+	region          region0;
+    	enabled         true;
+    	log             true;
+    	timeStart       100;
+    	timeEnd         1000000;
+    	executeControl  always;
+	executeInterval 1;
+        writeControl writeTime;
+        writeInterval 1;
+    }
+
+    nearWallFields1
+    {
+        // Mandatory entries
+        type            nearWallFields;
+        libs            (fieldFunctionObjects);
+        fields
+        (
+            (p pNear)
+        );
+        patches         (Wall);
+        distance        5e-5;
+
+        // Optional (inherited) entries
+        // region          region0;
+        // enabled         true;
+        // log             true;
+        // timeStart       0.25;
+        // timeEnd         1000;
+        // executeControl  timeStep;
+        // executeInterval 5;
+        writeControl    writeTime;
+        // writeInterval   25;
+    }
+
+}
+
+// ************************************************************************* //
