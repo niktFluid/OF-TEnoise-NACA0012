@@ -1,1 +1,2 @@
 # OF-TEnoise-NACA0012
+This repository provides setting files for a trailing-edge noise flow over a NACA0012 airfoil with OpenFOAM solver. A computational grid (polyMesh) can be downloaded from [here](https://www.dropbox.com/sh/i74g60zzw5152hg/AABXbZ7LphDKAKEzaV1Ug11ra?dl=0). You also needs [Weno Ext](https://github.com/WENO-OF/WENOEXT) library for using 3rd order WENO scheme for the computation. ~~See (add URL here) for more details in simulation results.~~
